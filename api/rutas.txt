@@ -1,5 +1,0 @@
-rutas en el servidor:
-
-Crear un lugar: POST http://localhost:8000/api/places/
-Obtener una lista de lugares: GET http://localhost:8000/api/places/
-Obtener detalles de un lugar: GET http://localhost:8000/api/places/<place_id>/
