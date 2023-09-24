@@ -21,6 +21,7 @@
   import Blog from './Blog.vue'
   import testimonial from './Testimonial.vue'
   import Footer from './Footer.vue'
+  import 'bootstrap/dist/css/bootstrap.min.css'
   
   
   export default {
