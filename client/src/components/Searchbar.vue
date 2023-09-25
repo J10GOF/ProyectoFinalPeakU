@@ -69,10 +69,29 @@ export default {
       // Update this.filteredResults with the filtered results
     },
     openModal() {
-      // Make a GET request to the API http://localhost:3001/place
-      // Update this.results with the API response
-      // Set this.showModal to true to open the modal
-    },
+  // Realizar la solicitud GET a la URL http://localhost:3001/place
+  fetch('http://localhost:3001/places')
+    .then(response => {
+      // Verificar si la respuesta es exitosa (código de estado 200)
+      if (response.status === 200) {
+        // Convertir la respuesta a JSON
+        return response.json();
+      } else {
+        // Si la respuesta no es exitosa, mostrar un mensaje de error
+        throw new Error('Failed to fetch data');
+      }
+    })
+    .then(data => {
+      // Actualizar this.results con los datos obtenidos de la respuesta
+      this.results = data;
+      // Abrir el modal
+      this.showModal = true;
+    })
+    .catch(error => {
+      console.error(error);
+      // Manejar el error de la solicitud
+    });
+},
     closeModal() {
       this.showModal = false;
     }

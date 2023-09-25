@@ -158,7 +158,7 @@ export default {
     },
     fetchData() {
       // Realizar la solicitud HTTP GET a tu backend
-      fetch("http://localhost:3001/place")
+      fetch("http://localhost:3001/places")
         .then((response) => response.json())
         .then((data) => {
           // Asignar los datos recibidos a la variable 'deals'
