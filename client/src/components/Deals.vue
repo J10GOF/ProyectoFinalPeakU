@@ -13,7 +13,7 @@
         <div class="row">
           <div class="col-lg-12">
             <div class="card-container">
-              <div class="col-lg-3 mb-4" v-for="(deal, index) in visibleDeals" :key="deal.id">
+              <div class="col-lg-3 mb-4" v-for="(deal) in visibleDeals" :key="deal.id">
                 <div class="card bg-light border-0">
                 <img :src="deal.image" class="card-img-top" alt="...">
                 <div class="card-body">
@@ -50,54 +50,18 @@
   </section>
 </template>
   
-  <script>
-  export default {
-    name: 'Deals',
-    data() {
-      return {
-        deals: [
-          {
-            id: 1,
-            image: '../assets/deals/Image(1).png',
-            title: 'Madrid',
-            rating: '4.8',
-            location: 'Spain',
-            originalPrice: '$950',
-            discountedPrice: '$850'
-          },
-          {
-            id: 2,
-            image: '../assets/deals/Image(2).png',
-            title: 'Firenze',
-            rating: '4.5',
-            location: 'Italy',
-            originalPrice: '$850',
-            discountedPrice: '$750'
-          },
-          {
-            id: 3,
-            image: '../assets/deals/Image(3).png',
-            title: 'Paris',
-            rating: '4.4',
-            location: 'France',
-            originalPrice: '$699',
-            discountedPrice: '$599'
-          },
-          {
-            id: 4,
-            image: '../assets/deals/Image(4).png',
-            title: 'London',
-            rating: '4.8',
-            location: 'UK',
-            originalPrice: '$950',
-            discountedPrice: '$850'
-          }
-        ],
-        currentPosition: 0, // Pista de la posición actual del carrusel
-        cardsToShow: 3,     // Número de cartas a mostrar a la vez
-      };
-    },
-    computed: {
+<script>
+export default {
+  name: 'Deals',
+  data() {
+    return {
+      // Tu array de ofertas vacío inicialmente
+      deals: [],
+      currentPosition: 0,
+      cardsToShow: 3,
+    };
+  },
+  computed: {
     visibleDeals() {
       // Calcular las ofertas visibles en función de la posición actual y el número de cartas a mostrar
       const startIndex = this.currentPosition;
@@ -107,22 +71,34 @@
   },
   methods: {
     prevSlide() {
-      // Retroceder una posición en el carrusel
       if (this.currentPosition > 0) {
         this.currentPosition--;
       }
     },
     nextSlide() {
-      // Avanzar una posición en el carrusel
       const maxPosition = this.deals.length - this.cardsToShow;
       if (this.currentPosition < maxPosition) {
         this.currentPosition++;
       }
     },
+    fetchData() {
+      // Realizar la solicitud HTTP GET a tu backend
+      fetch('http://localhost:3001/place')
+        .then(response => response.json())
+        .then(data => {
+          // Asignar los datos recibidos a la variable 'deals'
+          this.deals = data;
+        })
+        .catch(error => {
+          console.error('Error al cargar los datos:', error);
+        });
+    },
+  },
+  mounted() {
+    // Llamar a la función fetchData cuando se monta el componente
+    this.fetchData();
   },
 };
-
-  
 </script>
   
   <style scoped>
