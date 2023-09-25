@@ -4,11 +4,11 @@ const { Country } = require("../db");
 
 const router = Router();
 
-router.post("/place", async (req, res) => {
+
+router.post("/lugar", async (req, res) => {
   try {
     const {
       name,
-      countryId,
       price,
       discount,
       rating,
@@ -18,34 +18,33 @@ router.post("/place", async (req, res) => {
       country,
     } = req.body;
 
+    // Comprueba si el país ya existe en la base de datos
+    let existingCountry = await Country.findOne({ where: { name: country } });
+
+    // Si el país no existe, créalo
+    if (!existingCountry) {
+      existingCountry = await Country.create({ name: country });
+    }
+
+    // Crea un nuevo lugar asociado al país
     const newPlace = await Place.create({
       name,
-      countryId,
       price,
       discount,
       rating,
       distance,
       comments,
       image,
+      countryId: existingCountry.id, // Asocia el lugar al país
     });
 
-    if (Array.isArray(country)) {
-      for (const countryName of country) {
-        const countries = await Country.findAll({
-          where: { name: countryName },
-        });
-        await newPlace.addCountries(countries);
-      }
-    } else {
-      const countries = await Country.findAll({
-        where: { name: country },
-      });
-      await newPlace.addCountries(countries);
-    }
-
+    const createdPlace = await Place.findByPk(newPlace.id, {
+      include: Country,
+    });
+    // Devuelve una respuesta de éxito
     res
       .status(201)
-      .json({ message: "Lugar creado exitosamente", place: newPlace });
+      .json({ message: "Lugar creado exitosamente", place:createdPlace });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }

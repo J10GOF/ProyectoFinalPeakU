@@ -3,14 +3,21 @@ const { DataTypes } = require('sequelize');
 module.exports = (sequelize) => {
     // Modelo para Place (Lugar)
     sequelize.define('Place', {
+        id: {
+            type: DataTypes.INTEGER,
+            primaryKey: true,
+            autoIncrement: true,
+            allowNull: false,
+        },
         name: {
             type: DataTypes.STRING,
             allowNull: false,
         },
-        countryId: {
-            type: DataTypes.INTEGER,
-            //allowNull: false,
-        },
+        // countryId: {
+        //     type: DataTypes.UUID,
+        //     primaryKey: true,
+        //     allowNull: false,
+        // },
         price: {
             type: DataTypes.FLOAT,
             allowNull: false,
@@ -33,5 +40,7 @@ module.exports = (sequelize) => {
         image: {
             type: DataTypes.TEXT,
         },
+    }, {
+        timestamps: false,
     })
 };
